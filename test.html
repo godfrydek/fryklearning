@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="style.css?v=finalsell1781348453"/>
 <script src="guard.js?v=finalsell1781348453"></script>
 <script src="auth.js?v=finalsell1781348453"></script>
+<!-- subject-pool-fix: no cross-subject mixing -->
 </head><body><main class="wrap">
 <div class="topbar">
   <a class="brand-mini" href="index.html?v=finalsell1781348453">Fryk Learning</a>
@@ -177,27 +178,32 @@ function bankForKeys(keys){
   });
   return uniqueQuestions(all);
 }
-function expandedPoolForSelected(){
+function poolForSelectedTopic(){
+  // strict: selected topic first; fallback only same subject
   const selected = BASE_BANK[selectedKey];
-  let own = bankForKeys([selectedKey]);
-  let sameSubject = bankForKeys(subjectKeys(selected.subject));
-  let all = bankForKeys(allTopicKeys());
-  return uniqueQuestions([...own, ...sameSubject, ...all]);
+  const wanted = Number($("lengthSelect")?.value || 20);
+  const own = bankForKeys([selectedKey]);
+  if(own.length >= Math.min(wanted, 12)) return own;
+  const same = bankForKeys(subjectKeys(selected.subject));
+  return uniqueQuestions([...own, ...same]);
 }
 
 function topicBank(key){
   return [...(BASE_BANK[key]?.questions||[]), ...generatedMath(key)];
 }
 function filteredBank(){
-  let pool = expandedPoolForSelected();
+  let pool = poolForSelectedTopic();
   if(currentDifficulty==="medium"){
     const medium = pool.filter(x => x.d !== "easy");
-    if(medium.length >= 12) pool = medium;
+    if(medium.length >= 8) pool = medium;
   }
   if(currentDifficulty==="hard"){
     const hard = pool.filter(x => x.d === "hard");
-    if(hard.length >= 12) pool = hard;
-    else pool = pool.filter(x => x.d !== "easy");
+    if(hard.length >= 8) pool = hard;
+    else {
+      const mediumPlus = pool.filter(x => x.d !== "easy");
+      if(mediumPlus.length >= 8) pool = mediumPlus;
+    }
   }
   return shuffle(uniqueQuestions(pool));
 }
@@ -261,7 +267,7 @@ function applyTopic(){
   $("theoryLink").href = t.home + "?v=finalsell1781348453";
   const count = filteredBank().length;
   $("bankCount").textContent = count;
-  $("bankInfo").textContent = `Aktuální pool po rozšíření: ${count} otázek. Malá témata se doplní navazujícími otázkami ze stejného předmětu místo opakování.`;
+  $("bankInfo").textContent = `Aktuální pool: ${count} otázek. Malá témata se doplní jen stejným předmětem, takže angličtina netahá matiku a naopak.`;
   updateRank();
 }
 
@@ -272,7 +278,7 @@ function buildOrder(){
   const pool = filteredBank();
   order = pool.slice(0, Math.min(len, pool.length));
   if(order.length < len){
-    // Only after the whole expanded pool is exhausted do we allow a second round.
+    // Only after the selected/same-subject pool is exhausted do we allow a second round.
     const refill = shuffle(pool).map(x => ({...x, q:x.q + " "}));
     order = order.concat(refill.slice(0, len - order.length));
   }

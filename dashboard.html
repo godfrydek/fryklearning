@@ -1,0 +1,29 @@
+<!DOCTYPE html><html lang="cs"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="robots" content="noindex,nofollow"/><title>Dashboard · Fryk Learning</title><link rel="stylesheet" href="style.css?v=finalsell1781348453"/><script src="guard.js?v=finalsell1781348453"></script></head><body><main class="wrap">
+<div class="topbar"><a class="brand-mini" href="index.html?v=finalsell1781348453">Fryk Learning</a><a class="nav" href="index.html?v=finalsell1781348453">Home</a><a class="nav" href="anglictina.html?v=finalsell1781348453">Angličtina</a><a class="nav" href="matika.html?v=finalsell1781348453">Matika</a><a class="nav" href="cestina.html?v=finalsell1781348453">Čeština</a><a class="nav auth-link" href="login.html?v=finalsell1781348453">Login</a></div>
+<section class="hero card home-hero"><div class="badge">Fryk Learning · dashboard</div><h1><span class="gradient-title">Dashboard</span></h1><p class="lead">Tvoje studijní centrum: XP, testy, poslední výkon a rychlý návrat do předmětů.</p></section>
+<section class="stats-grid">
+  <article class="card stat-card"><span>Testy</span><strong id="sTests">0</strong></article>
+  <article class="card stat-card"><span>XP</span><strong id="sXp">0</strong></article>
+  <article class="card stat-card"><span>Průměr</span><strong id="sAvg">0%</strong></article>
+  <article class="card stat-card"><span>Best</span><strong id="sBest">0%</strong></article>
+</section>
+<section class="app-dashboard-grid">
+  <article class="card box app-panel"><h2>Rychlý start</h2><div class="app-action-grid">
+    <a class="quick-access-card card" href="anglictina.html?v=finalsell1781348453"><strong>Angličtina</strong><span>grammar + Gateway</span></a>
+    <a class="quick-access-card card" href="matika.html?v=finalsell1781348453"><strong>Matika</strong><span>rovnice, funkce, grafy</span></a>
+    <a class="quick-access-card card" href="cestina.html?v=finalsell1781348453"><strong>Čeština</strong><span>rozbory, pravopis, literatura</span></a>
+    <a class="quick-access-card card" href="test.html?v=finalsell1781348453"><strong>Testy</strong><span>ranked procvičení</span></a>
+  </div></article>
+  <article class="card box app-panel"><h2>Poslední testy</h2><div id="recentRows" class="table-like"></div></article>
+</section>
+<script src="auth.js?v=finalsell1781348453"></script>
+<script>
+const s = FLAuth.summary();
+document.getElementById("sTests").textContent = s.tests;
+document.getElementById("sXp").textContent = s.xp;
+document.getElementById("sAvg").textContent = s.avg + "%";
+document.getElementById("sBest").textContent = s.best + "%";
+const recent = document.getElementById("recentRows");
+recent.innerHTML = s.rows.slice(0,8).map(r => `<div><strong>${r.topic||r.key||"Test"}</strong><span>${r.pct||0}% · ${r.xp||0} XP</span></div>`).join("") || "<p class='small'>Zatím žádný test. Spusť první test a tady se začne plnit progress.</p>";
+</script>
+</main></body></html>

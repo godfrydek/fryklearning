@@ -1,0 +1,374 @@
+<!DOCTYPE html><html lang="cs"><head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>Testy · Fryk Learning</title>
+<link rel="stylesheet" href="style.css?v=finalsell1781348453"/>
+<script src="guard.js?v=finalsell1781348453"></script>
+<script src="auth.js?v=finalsell1781348453"></script>
+</head><body><main class="wrap">
+<div class="topbar">
+  <a class="brand-mini" href="index.html?v=finalsell1781348453">Fryk Learning</a>
+  <a class="nav" href="anglictina.html?v=finalsell1781348453">Angličtina</a>
+  <a class="nav" href="matika.html?v=finalsell1781348453">Matika</a>
+  <a class="nav" href="cestina.html?v=finalsell1781348453">Čeština</a>
+  <a class="nav" href="dashboard.html?v=finalsell1781348453">Dashboard</a>
+  <a class="nav auth-link" href="login.html?v=finalsell1781348453">Login</a>
+</div>
+
+<section class="hero card home-hero">
+  <div class="badge">Fryk Learning · ranked test</div>
+  <h1><span class="gradient-title">Testy</span></h1>
+  <p class="lead">Finální ranked test systém: větší pool, méně opakování, XP, streak, obtížnosti a ukládání progressu do dashboardu.</p>
+</section>
+
+<section class="rank-test-grid">
+  <section class="maincol">
+    <section id="setup" class="card test-card">
+      <h2>Nastavení testu</h2>
+      <div class="test-setup-grid">
+        <div class="field"><label>Téma</label><select id="topicSelect"></select></div>
+        <div class="field"><label>Délka</label><select id="lengthSelect"><option value="10">10 rychlovka</option><option value="20" selected>20 standard</option><option value="35">35 grind</option><option value="50">50 bossfight</option></select></div>
+        <div class="field"><label>Obtížnost</label><select id="difficultySelect"><option value="mixed" selected>Mix</option><option value="medium">Medium+</option><option value="hard">Hard only</option></select></div>
+        <div class="field"><label>Typ</label><select id="modeSelect"><option value="choice" selected>Multiple choice</option><option value="type">Psaní odpovědi</option><option value="mixed">Mix</option></select></div>
+      </div>
+      <div class="test-actions">
+        <button class="primary" id="startBtn">Start test</button>
+        <a class="secondary" id="theoryLink" href="index.html?v=finalsell1781348453">Otevřít teorii</a>
+      </div>
+      <p class="small" id="bankInfo" style="margin-top:12px"></p>
+    </section>
+
+    <section id="quiz" class="card test-card hidden">
+      <div class="test-meta-line">
+        <span class="test-pill" id="qCounter">Otázka</span>
+        <span class="test-pill" id="scorePill">0 / 0</span>
+        <span class="test-pill" id="streakPill">0x streak</span>
+        <span class="test-pill" id="difficultyPill">Mix</span>
+      </div>
+      <div class="xpbar-wrap"><div class="xpbar" id="progressBar"></div></div>
+      <div class="challenge-label" id="questionLabel">Úloha</div>
+      <div class="test-question" id="questionText"></div>
+      <div id="options" class="test-options"></div>
+      <div id="typeBox" class="test-input-row hidden"><input id="answerInput" placeholder="Napiš odpověď..."><button class="primary" id="checkBtn">Zkontrolovat</button></div>
+      <div id="feedback" class="test-feedback">Vyber odpověď 👇</div>
+      <div class="test-actions">
+        <button class="secondary" id="nextBtn" disabled>Další</button>
+        <button class="secondary" id="finishBtn">Ukončit</button>
+      </div>
+    </section>
+
+    <section id="done" class="card test-card hidden">
+      <h2>Výsledek</h2>
+      <p class="bigscore" id="finalScore">0%</p>
+      <p class="small" id="finalText"></p>
+      <div class="test-actions">
+        <button class="primary" id="againBtn">Dát znovu</button>
+        <a class="secondary" href="dashboard.html?v=finalsell1781348453">Dashboard</a>
+      </div>
+    </section>
+  </section>
+
+  <aside class="rank-panel">
+    <section class="card test-rank-card">
+      <div class="rank-icon" id="rankIcon"></div>
+      <div class="test-rank-name" id="rankName">Rank</div>
+      <div class="test-rank-sub" id="rankSub">0 XP</div>
+      <div class="xpbar-wrap" style="margin-top:12px"><div class="xpbar" id="rankBar"></div></div>
+    </section>
+    <section class="card box" style="margin-top:14px">
+      <h2>Stats</h2>
+      <div class="table-like">
+        <div><strong id="topicName">Téma</strong><span id="topicSubject">Předmět</span></div>
+        <div><strong id="xpNow">0 XP</strong><span>uloženo pro toto téma</span></div>
+        <div><strong id="mistakesNow">0</strong><span>chyby v aktuálním testu</span></div>
+        <div><strong id="bankCount">0</strong><span>otázek v aktuálním poolu</span></div>
+      </div>
+    </section>
+  </aside>
+</section>
+
+<script>
+const BASE_BANK = {"passivevoice": {"title": "Passive Voice", "subject": "Angličtina", "theme": "english", "home": "anglictina.html", "ranks": [["Word Rookie", "WR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Grammar Goblin", "GG", 150, "#60a5fa", "#2563eb", "#dbeafe"], ["Sentence Builder", "SB", 420, "#38bdf8", "#0369a1", "#e0f2fe"], ["Tense Tamer", "TT", 900, "#34d399", "#047857", "#d1fae5"], ["C1 Sweat", "C1", 1500, "#c084fc", "#7e22ce", "#f3e8ff"], ["Grammar Demon", "GD", 2400, "#fb7185", "#be123c", "#ffe4e6"], ["Language Menace", "LM", 3600, "#f59e0b", "#7c2d12", "#ffedd5"]], "questions": [{"q": "Passive voice v Present Simple tvoříme jako:", "o": ["am/is/are + V3", "was/were + V3", "have/has + V3", "will + infinitive"], "a": ["am/is/are + V3"], "e": "Present Simple passive = am/is/are + past participle.", "x": 80, "d": "easy"}, {"q": "English ____ all over the world.", "o": ["is spoken", "speaks", "is speaking", "was spoken"], "a": ["is spoken"], "e": "Obecné tvrzení v present simple passive.", "x": 90, "d": "easy"}, {"q": "They clean the room every day. Passive:", "o": ["The room is cleaned every day.", "The room is being cleaned every day.", "The room was cleaned every day.", "The room has cleaned every day."], "a": ["The room is cleaned every day"], "e": "Every day = present simple, object becomes subject.", "x": 130, "d": "medium"}, {"q": "Someone stole my bike yesterday. Passive:", "o": ["My bike was stolen yesterday.", "My bike is stolen yesterday.", "My bike has stolen yesterday.", "My bike was stole yesterday."], "a": ["My bike was stolen yesterday"], "e": "Past simple passive = was/were + V3.", "x": 140, "d": "medium"}, {"q": "They are building a new bridge. Passive:", "o": ["A new bridge is being built.", "A new bridge is built.", "A new bridge was being built.", "A new bridge has built."], "a": ["A new bridge is being built"], "e": "Present continuous passive = am/is/are being + V3.", "x": 170, "d": "hard"}, {"q": "They have already sent the email. Passive:", "o": ["The email has already been sent.", "The email was already sent.", "The email is already sent.", "The email has already sent."], "a": ["The email has already been sent"], "e": "Present perfect passive = has/have been + V3.", "x": 180, "d": "hard"}, {"q": "The report must be finished today. Co je 'must be finished'?", "o": ["modal passive", "present perfect passive", "past continuous passive", "active voice"], "a": ["modal passive"], "e": "Modal passive = modal + be + V3.", "x": 160, "d": "hard"}, {"q": "People say that he is rich. Přirozenější passive transformace:", "o": ["He is said to be rich.", "He is said that rich.", "It is said him to be rich.", "He said to be rich."], "a": ["He is said to be rich"], "e": "Reporting passive: He is said to be...", "x": 210, "d": "hard"}, {"q": "A mistake ____ in the calculation.", "o": ["was made", "made", "was making", "has making"], "a": ["was made"], "e": "make a mistake → a mistake was made.", "x": 100, "d": "medium"}, {"q": "This problem can ____ easily.", "o": ["be solved", "solve", "be solve", "is solved"], "a": ["be solved"], "e": "Modal can + be + V3.", "x": 130, "d": "medium"}, {"q": "Vyber větu, která NENÍ passive:", "o": ["She wrote a letter.", "The letter was written.", "The room is cleaned.", "The car has been repaired."], "a": ["She wrote a letter"], "e": "She wrote = active voice.", "x": 120, "d": "medium"}, {"q": "By the time we arrived, the tickets ____.", "o": ["had been sold", "were selling", "have sold", "are sold"], "a": ["had been sold"], "e": "Past perfect passive = had been + V3.", "x": 220, "d": "hard"}]}, "havesomethingdone": {"title": "Have something done", "subject": "Angličtina", "theme": "english", "home": "anglictina.html", "ranks": [["Word Rookie", "WR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Grammar Goblin", "GG", 150, "#60a5fa", "#2563eb", "#dbeafe"], ["Sentence Builder", "SB", 420, "#38bdf8", "#0369a1", "#e0f2fe"], ["Tense Tamer", "TT", 900, "#34d399", "#047857", "#d1fae5"], ["C1 Sweat", "C1", 1500, "#c084fc", "#7e22ce", "#f3e8ff"], ["Grammar Demon", "GD", 2400, "#fb7185", "#be123c", "#ffe4e6"], ["Language Menace", "LM", 3600, "#f59e0b", "#7c2d12", "#ffedd5"]], "questions": [{"q": "I had my phone repaired znamená:", "o": ["Někdo mi opravil telefon", "Já jsem opravoval telefon", "Telefon se sám opravil", "Já jsem někomu telefon opravil"], "a": ["Někdo mi opravil telefon"], "e": "Have something done = nechám si něco udělat.", "x": 80, "d": "easy"}, {"q": "Základní struktura je:", "o": ["have + object + V3", "have + V3 + object", "be + object + V3", "do + object + V3"], "a": ["have + object + V3"], "e": "I have my hair cut.", "x": 90, "d": "easy"}, {"q": "She will have her hair cut.", "o": ["Nechá si ostříhat vlasy.", "Ostříhá někomu vlasy.", "Už si ostříhala vlasy.", "Stříhá si vlasy každý den."], "a": ["Nechá si ostříhat vlasy"], "e": "Will have + object + V3.", "x": 100, "d": "easy"}, {"q": "I am having my laptop fixed tomorrow. Význam:", "o": ["Zítra si nechávám opravit notebook.", "Zítra opravuji notebook.", "Notebook opravil mě.", "Každý den opravuji notebook."], "a": ["Zítra si nechávám opravit notebook"], "e": "Present continuous pro domluvenou budoucnost + have sth done.", "x": 160, "d": "medium"}, {"q": "They had their house painted last week. Kdo maloval?", "o": ["pravděpodobně někdo najatý", "oni sami určitě", "nikdo", "dům sám"], "a": ["pravděpodobně někdo najatý"], "e": "Have sth done naznačuje službu od někoho.", "x": 120, "d": "medium"}, {"q": "Vyber správně:", "o": ["I need to have my eyes checked.", "I need have my eyes check.", "I need to have checked my eyes.", "I need having my eyes checked."], "a": ["I need to have my eyes checked"], "e": "Need to + have + object + V3.", "x": 170, "d": "hard"}, {"q": "Causative have v otázce:", "o": ["Did you have your car serviced?", "Had you your car serviced?", "Did you had your car serviced?", "Do you had your car serviced?"], "a": ["Did you have your car serviced"], "e": "Past simple question uses did + base have.", "x": 170, "d": "hard"}, {"q": "Rozdíl: I cut my hair vs I had my hair cut", "o": ["první dělám sám, druhé někdo pro mě", "význam je vždy stejný", "druhé je active voice bez služby", "první je future"], "a": ["první dělám sám, druhé někdo pro mě"], "e": "Tohle je hlavní rozdíl causative form.", "x": 140, "d": "medium"}, {"q": "She got her nails done. Je to:", "o": ["neformálnější varianta have something done", "passive voice bez causative významu", "future perfect", "přímý rozkaz"], "a": ["neformálnější varianta have something done"], "e": "Get something done je častá varianta.", "x": 160, "d": "hard"}]}, "gatewayunit1": {"title": "Gateway Unit 1", "subject": "Angličtina", "theme": "english", "home": "anglictina.html", "ranks": [["Word Rookie", "WR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Grammar Goblin", "GG", 150, "#60a5fa", "#2563eb", "#dbeafe"], ["Sentence Builder", "SB", 420, "#38bdf8", "#0369a1", "#e0f2fe"], ["Tense Tamer", "TT", 900, "#34d399", "#047857", "#d1fae5"], ["C1 Sweat", "C1", 1500, "#c084fc", "#7e22ce", "#f3e8ff"], ["Grammar Demon", "GD", 2400, "#fb7185", "#be123c", "#ffe4e6"], ["Language Menace", "LM", 3600, "#f59e0b", "#7c2d12", "#ffedd5"]], "questions": [{"q": "Present continuous s always často vyjadřuje:", "o": ["otravný/opakovaný zvyk", "minulý děj", "budoucí jistotu", "pasivum"], "a": ["otravný/opakovaný zvyk"], "e": "He is always complaining = pořád si stěžuje.", "x": 90, "d": "easy"}, {"q": "Will pro zvyk ve větě 'He will sit there for hours' znamená:", "o": ["typické/opakované chování", "jistou budoucnost pouze", "podmínku", "pasivum"], "a": ["typické/opakované chování"], "e": "Will může popsat typické chování.", "x": 150, "d": "medium"}, {"q": "I’ve been studying zdůrazňuje:", "o": ["proces a trvání", "počet dokončených věcí", "budoucnost", "pasivum"], "a": ["proces a trvání"], "e": "Present perfect continuous zdůrazňuje průběh.", "x": 100, "d": "easy"}, {"q": "I’ve written three essays today. Proč simple?", "o": ["počet dokončených věcí", "délka procesu", "otravný zvyk", "pasivum"], "a": ["počet dokončených věcí"], "e": "Počet dokončených výsledků → present perfect simple.", "x": 170, "d": "hard"}, {"q": "Po předložce většinou použiješ:", "o": ["gerund", "infinitive without to", "past participle", "will"], "a": ["gerund"], "e": "good at speaking, interested in studying.", "x": 90, "d": "easy"}, {"q": "Vyber správnou collocation:", "o": ["make progress", "do progress", "make homework", "do a mistake"], "a": ["make progress"], "e": "Make progress, do homework, make a mistake.", "x": 120, "d": "medium"}, {"q": "He is forever losing his keys. Význam:", "o": ["otravný opakovaný zvyk", "právě ztrácí klíče jednou", "budoucí děj", "pasivum"], "a": ["otravný opakovaný zvyk"], "e": "Forever + continuous může vyjadřovat annoyance.", "x": 180, "d": "hard"}, {"q": "I stopped to talk vs I stopped talking:", "o": ["první = zastavil jsem se, abych mluvil; druhé = přestal jsem mluvit", "význam je stejný", "první je pasivum", "druhé je budoucnost"], "a": ["první = zastavil jsem se, abych mluvil; druhé = přestal jsem mluvit"], "e": "Stop + infinitive vs stop + gerund mění význam.", "x": 220, "d": "hard"}, {"q": "She has lived here for 5 years. Co zdůrazňuje?", "o": ["stav/trvání do teď", "jednorázový minulý děj bez dopadu", "future arrangement", "pasivum"], "a": ["stav/trvání do teď"], "e": "Present perfect simple může popsat trvání stavu.", "x": 150, "d": "medium"}]}, "gatewayunit2": {"title": "Gateway Unit 2", "subject": "Angličtina", "theme": "english", "home": "anglictina.html", "ranks": [["Word Rookie", "WR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Grammar Goblin", "GG", 150, "#60a5fa", "#2563eb", "#dbeafe"], ["Sentence Builder", "SB", 420, "#38bdf8", "#0369a1", "#e0f2fe"], ["Tense Tamer", "TT", 900, "#34d399", "#047857", "#d1fae5"], ["C1 Sweat", "C1", 1500, "#c084fc", "#7e22ce", "#f3e8ff"], ["Grammar Demon", "GD", 2400, "#fb7185", "#be123c", "#ffe4e6"], ["Language Menace", "LM", 3600, "#f59e0b", "#7c2d12", "#ffedd5"]], "questions": [{"q": "Když nevíš slovíčko v textu, první strategie je:", "o": ["pochopit kontext", "přeskočit celý text", "překládat každé slovo zvlášť", "vždy tipnout první možnost"], "a": ["pochopit kontext"], "e": "Kontext často prozradí význam.", "x": 80, "d": "easy"}, {"q": "good at speaking používá:", "o": ["gerund", "infinitive", "passive", "future simple"], "a": ["gerund"], "e": "Po at je gerund.", "x": 90, "d": "easy"}, {"q": "want ___ go", "o": ["to", "going", "gone", "goes"], "a": ["to"], "e": "want to go.", "x": 70, "d": "easy"}, {"q": "avoid ____ mistakes", "o": ["making", "to make", "make", "made"], "a": ["making"], "e": "Avoid + gerund.", "x": 130, "d": "medium"}, {"q": "too difficult ____ understand", "o": ["to", "for", "at", "with"], "a": ["to"], "e": "too + adjective + to infinitive.", "x": 130, "d": "medium"}, {"q": "She suggested ____ earlier.", "o": ["leaving", "to leave", "leave", "left"], "a": ["leaving"], "e": "Suggest + gerund.", "x": 170, "d": "hard"}, {"q": "I look forward to ____ you.", "o": ["seeing", "see", "to see", "saw"], "a": ["seeing"], "e": "look forward to + gerund, protože to je předložka to.", "x": 190, "d": "hard"}, {"q": "enough money ____ buy it", "o": ["to", "for", "at", "with"], "a": ["to"], "e": "enough + noun + to infinitive.", "x": 120, "d": "medium"}]}, "gatewayunit3": {"title": "Gateway Unit 3", "subject": "Angličtina", "theme": "english", "home": "anglictina.html", "ranks": [["Word Rookie", "WR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Grammar Goblin", "GG", 150, "#60a5fa", "#2563eb", "#dbeafe"], ["Sentence Builder", "SB", 420, "#38bdf8", "#0369a1", "#e0f2fe"], ["Tense Tamer", "TT", 900, "#34d399", "#047857", "#d1fae5"], ["C1 Sweat", "C1", 1500, "#c084fc", "#7e22ce", "#f3e8ff"], ["Grammar Demon", "GD", 2400, "#fb7185", "#be123c", "#ffe4e6"], ["Language Menace", "LM", 3600, "#f59e0b", "#7c2d12", "#ffedd5"]], "questions": [{"q": "since/for často souvisí s:", "o": ["present perfect", "imperativem", "future simple", "passive voice always"], "a": ["present perfect"], "e": "since/for bývá signál perfectu.", "x": 90, "d": "easy"}, {"q": "for použiješ u:", "o": ["délky trvání", "počátečního bodu", "konkrétního dne vždy", "pasiva"], "a": ["délky trvání"], "e": "for two years, for a week.", "x": 100, "d": "easy"}, {"q": "since použiješ u:", "o": ["počátečního bodu", "délky trvání", "počtu věcí", "future plan"], "a": ["počátečního bodu"], "e": "since 2020, since Monday.", "x": 100, "d": "easy"}, {"q": "She has been working since 8 a.m. Zdůrazňuje:", "o": ["proces od určitého bodu", "hotový počet výsledků", "jednorázový minulý děj", "pasivum"], "a": ["proces od určitého bodu"], "e": "Perfect continuous + since.", "x": 160, "d": "medium"}, {"q": "I have read 30 pages. Zdůrazňuje:", "o": ["výsledek/počet", "proces", "otravný zvyk", "budoucnost"], "a": ["výsledek/počet"], "e": "Počet dokončených věcí → simple.", "x": 150, "d": "medium"}, {"q": "Vyber lepší větu:", "o": ["I have known him for years.", "I have been knowing him for years.", "I knowed him for years.", "I am knowing him."], "a": ["I have known him for years"], "e": "Know je stavové sloveso, obvykle ne continuous.", "x": 200, "d": "hard"}]}, "linearnirovnice": {"title": "Lineární rovnice", "subject": "Matematika", "theme": "math", "home": "matika.html", "ranks": [["Number Rookie", "NR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Equation Goblin", "EG", 150, "#fbbf24", "#f97316", "#ffedd5"], ["Graph Grinder", "GG", 420, "#34d399", "#047857", "#d1fae5"], ["Algebra Menace", "AM", 900, "#f59e0b", "#ef4444", "#fee2e2"], ["Function Beast", "FB", 1500, "#60a5fa", "#7c3aed", "#ede9fe"], ["Math Demon", "MD", 2400, "#fde047", "#f97316", "#fff7ed"], ["Calculator Killer", "CK", 3600, "#fb7185", "#7f1d1d", "#ffe4e6"]], "questions": [{"q": "Lineární rovnice má proměnnou nejvýše v:", "o": ["1. mocnině", "2. mocnině", "odmocnině", "exponentu"], "a": ["1. mocnině"], "e": "Lineární = x není umocněné na druhou.", "x": 80, "d": "easy"}, {"q": "2x + 3 = 7, x =", "o": ["2", "3", "4", "5"], "a": ["2"], "e": "2x=4, x=2.", "x": 100, "d": "easy"}, {"q": "Ekvivalentní úprava:", "o": ["nezmění řešení", "vždy změní řešení", "maže proměnnou", "platí jen u procent"], "a": ["nezmění řešení"], "e": "Ekvivalentní úprava zachová množinu řešení.", "x": 90, "d": "easy"}, {"q": "3(x-2)=12, x =", "o": ["6", "4", "2", "5"], "a": ["6"], "e": "x-2=4, x=6.", "x": 140, "d": "medium"}, {"q": "5x - 2 = 3x + 10, x =", "o": ["6", "4", "8", "5"], "a": ["6"], "e": "2x=12, x=6.", "x": 140, "d": "medium"}, {"q": "Když při řešení vyjde 0 = 0, rovnice má:", "o": ["nekonečně mnoho řešení", "žádné řešení", "právě jedno řešení", "dvě řešení"], "a": ["nekonečně mnoho řešení"], "e": "Identita platí pro všechna x.", "x": 180, "d": "hard"}, {"q": "Když při řešení vyjde 0 = 5, rovnice má:", "o": ["žádné řešení", "nekonečně mnoho řešení", "x=5", "x=0"], "a": ["žádné řešení"], "e": "Spor znamená žádné řešení.", "x": 180, "d": "hard"}]}, "kvadratickerovnice": {"title": "Kvadratické rovnice", "subject": "Matematika", "theme": "math", "home": "matika.html", "ranks": [["Number Rookie", "NR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Equation Goblin", "EG", 150, "#fbbf24", "#f97316", "#ffedd5"], ["Graph Grinder", "GG", 420, "#34d399", "#047857", "#d1fae5"], ["Algebra Menace", "AM", 900, "#f59e0b", "#ef4444", "#fee2e2"], ["Function Beast", "FB", 1500, "#60a5fa", "#7c3aed", "#ede9fe"], ["Math Demon", "MD", 2400, "#fde047", "#f97316", "#fff7ed"], ["Calculator Killer", "CK", 3600, "#fb7185", "#7f1d1d", "#ffe4e6"]], "questions": [{"q": "Kvadratická rovnice obsahuje:", "o": ["x²", "jen x", "sin x", "log x"], "a": ["x²"], "e": "Kvadratická rovnice má člen s x².", "x": 80, "d": "easy"}, {"q": "Diskriminant značíme:", "o": ["D", "P", "S", "Q"], "a": ["D"], "e": "D = b² - 4ac.", "x": 70, "d": "easy"}, {"q": "Když D < 0, reálně má rovnice:", "o": ["žádné řešení", "jedno řešení", "dvě řešení", "nekonečně řešení"], "a": ["žádné řešení"], "e": "Záporný diskriminant nemá reálné kořeny.", "x": 120, "d": "medium"}, {"q": "x² - 9 = 0 má řešení:", "o": ["x=±3", "x=3 pouze", "x=-3 pouze", "žádné"], "a": ["x=±3"], "e": "x²=9 → x=3 nebo -3.", "x": 130, "d": "medium"}, {"q": "x² + 5x + 6 = 0 má kořeny:", "o": ["-2 a -3", "2 a 3", "-1 a 6", "1 a -6"], "a": ["-2 a -3"], "e": "(x+2)(x+3)=0.", "x": 180, "d": "hard"}, {"q": "Vrchol paraboly y=(x-2)²+3 je:", "o": ["[2;3]", "[-2;3]", "[3;2]", "[2;-3]"], "a": ["[2;3]"], "e": "Vrcholový tvar y=(x-h)²+k má vrchol [h;k].", "x": 190, "d": "hard"}]}, "funkce": {"title": "Funkce", "subject": "Matematika", "theme": "math", "home": "matika.html", "ranks": [["Number Rookie", "NR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Equation Goblin", "EG", 150, "#fbbf24", "#f97316", "#ffedd5"], ["Graph Grinder", "GG", 420, "#34d399", "#047857", "#d1fae5"], ["Algebra Menace", "AM", 900, "#f59e0b", "#ef4444", "#fee2e2"], ["Function Beast", "FB", 1500, "#60a5fa", "#7c3aed", "#ede9fe"], ["Math Demon", "MD", 2400, "#fde047", "#f97316", "#fff7ed"], ["Calculator Killer", "CK", 3600, "#fb7185", "#7f1d1d", "#ffe4e6"]], "questions": [{"q": "Funkce přiřazuje každému x:", "o": ["nejvýše jednu hodnotu y", "vždy dvě hodnoty y", "žádnou hodnotu", "jen záporné y"], "a": ["nejvýše jednu hodnotu y"], "e": "Jednomu x nesmí patřit dvě různá y.", "x": 90, "d": "easy"}, {"q": "Definiční obor je:", "o": ["množina povolených x", "množina výsledných y", "jen průsečík s osou y", "směrnice"], "a": ["množina povolených x"], "e": "Definiční obor = hodnoty x.", "x": 90, "d": "easy"}, {"q": "Obor hodnot je:", "o": ["množina možných y", "množina možných x", "jen maximum", "jen minimum"], "a": ["množina možných y"], "e": "Obor hodnot = výsledné hodnoty y.", "x": 90, "d": "easy"}, {"q": "Směrnice přímky y=3x+2 je:", "o": ["3", "2", "5", "-3"], "a": ["3"], "e": "U y=kx+q je směrnice k.", "x": 120, "d": "medium"}, {"q": "Průsečík s osou y u y=-2x+5 je:", "o": ["5", "-2", "0", "-5"], "a": ["5"], "e": "Dosadíš x=0, y=5.", "x": 130, "d": "medium"}, {"q": "Funkce y=1/x nemá definováno:", "o": ["x=0", "x=1", "x=-1", "x=2"], "a": ["x=0"], "e": "Nulou nelze dělit.", "x": 150, "d": "medium"}, {"q": "Rostoucí funkce znamená:", "o": ["větší x vede k větším y", "větší x vede vždy k menším y", "všechny y jsou stejné", "graf nemá osu"], "a": ["větší x vede k větším y"], "e": "Rostoucí = s x roste y.", "x": 120, "d": "medium"}]}, "procenta": {"title": "Procenta", "subject": "Matematika", "theme": "math", "home": "matika.html", "ranks": [["Number Rookie", "NR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Equation Goblin", "EG", 150, "#fbbf24", "#f97316", "#ffedd5"], ["Graph Grinder", "GG", 420, "#34d399", "#047857", "#d1fae5"], ["Algebra Menace", "AM", 900, "#f59e0b", "#ef4444", "#fee2e2"], ["Function Beast", "FB", 1500, "#60a5fa", "#7c3aed", "#ede9fe"], ["Math Demon", "MD", 2400, "#fde047", "#f97316", "#fff7ed"], ["Calculator Killer", "CK", 3600, "#fb7185", "#7f1d1d", "#ffe4e6"]], "questions": [{"q": "1 % znamená:", "o": ["jedna setina", "jedna desetina", "jedna polovina", "sto celků"], "a": ["jedna setina"], "e": "1 % = 1/100.", "x": 60, "d": "easy"}, {"q": "20 % z 200 je:", "o": ["40", "20", "100", "60"], "a": ["40"], "e": "0,2 × 200 = 40.", "x": 100, "d": "easy"}, {"q": "Zvýšení o 10 % znamená násobit:", "o": ["1,10", "0,10", "0,90", "10"], "a": ["1,10"], "e": "100 % + 10 % = 110 % = 1,10.", "x": 110, "d": "medium"}, {"q": "Sleva 25 % znamená platit:", "o": ["75 % původní ceny", "25 % původní ceny", "125 % ceny", "100 % ceny"], "a": ["75 % původní ceny"], "e": "100-25=75 %.", "x": 90, "d": "easy"}, {"q": "Cena 800 Kč po slevě 15 % je:", "o": ["680 Kč", "720 Kč", "785 Kč", "650 Kč"], "a": ["680 Kč"], "e": "800×0,85=680.", "x": 150, "d": "medium"}, {"q": "Po zdražení o 20 % stojí věc 600 Kč. Původní cena byla:", "o": ["500 Kč", "480 Kč", "520 Kč", "720 Kč"], "a": ["500 Kč"], "e": "600/1,2=500.", "x": 190, "d": "hard"}, {"q": "Nárůst ze 40 na 50 je:", "o": ["25 %", "10 %", "20 %", "125 %"], "a": ["25 %"], "e": "Změna 10 z původních 40 = 25 %.", "x": 180, "d": "hard"}]}, "goniometrie": {"title": "Goniometrie", "subject": "Matematika", "theme": "math", "home": "matika.html", "ranks": [["Number Rookie", "NR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Equation Goblin", "EG", 150, "#fbbf24", "#f97316", "#ffedd5"], ["Graph Grinder", "GG", 420, "#34d399", "#047857", "#d1fae5"], ["Algebra Menace", "AM", 900, "#f59e0b", "#ef4444", "#fee2e2"], ["Function Beast", "FB", 1500, "#60a5fa", "#7c3aed", "#ede9fe"], ["Math Demon", "MD", 2400, "#fde047", "#f97316", "#fff7ed"], ["Calculator Killer", "CK", 3600, "#fb7185", "#7f1d1d", "#ffe4e6"]], "questions": [{"q": "Sinus na jednotkové kružnici odpovídá:", "o": ["y souřadnici", "x souřadnici", "poloměru 2", "obsahu kruhu"], "a": ["y souřadnici"], "e": "sin je y souřadnice.", "x": 90, "d": "easy"}, {"q": "Cosinus na jednotkové kružnici odpovídá:", "o": ["x souřadnici", "y souřadnici", "tečně", "úsečce mimo kruh"], "a": ["x souřadnici"], "e": "cos je x souřadnice.", "x": 90, "d": "easy"}, {"q": "tan je:", "o": ["sin/cos", "cos/sin", "sin+cos", "sin-cos"], "a": ["sin/cos"], "e": "tan α = sin α / cos α.", "x": 110, "d": "medium"}, {"q": "sin 30° =", "o": ["1/2", "√3/2", "1", "0"], "a": ["1/2"], "e": "Základní hodnota na jednotkové kružnici.", "x": 130, "d": "medium"}, {"q": "cos 60° =", "o": ["1/2", "√3/2", "0", "1"], "a": ["1/2"], "e": "cos 60° = 1/2.", "x": 130, "d": "medium"}, {"q": "sin²x + cos²x =", "o": ["1", "0", "tan x", "2"], "a": ["1"], "e": "Základní goniometrická identita.", "x": 160, "d": "hard"}, {"q": "tan není definován, když:", "o": ["cos x = 0", "sin x = 0", "sin x = cos x", "x=0 vždy"], "a": ["cos x = 0"], "e": "tan = sin/cos, nelze dělit nulou.", "x": 190, "d": "hard"}]}, "trojuhelnik": {"title": "Trojúhelník", "subject": "Matematika", "theme": "math", "home": "matika.html", "ranks": [["Number Rookie", "NR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Equation Goblin", "EG", 150, "#fbbf24", "#f97316", "#ffedd5"], ["Graph Grinder", "GG", 420, "#34d399", "#047857", "#d1fae5"], ["Algebra Menace", "AM", 900, "#f59e0b", "#ef4444", "#fee2e2"], ["Function Beast", "FB", 1500, "#60a5fa", "#7c3aed", "#ede9fe"], ["Math Demon", "MD", 2400, "#fde047", "#f97316", "#fff7ed"], ["Calculator Killer", "CK", 3600, "#fb7185", "#7f1d1d", "#ffe4e6"]], "questions": [{"q": "Součet vnitřních úhlů trojúhelníku je:", "o": ["180°", "90°", "360°", "270°"], "a": ["180°"], "e": "Každý trojúhelník má součet 180°.", "x": 70, "d": "easy"}, {"q": "Obsah trojúhelníku:", "o": ["a·vₐ / 2", "a·vₐ", "a²", "2πr"], "a": ["a·vₐ / 2"], "e": "Obsah = základna × výška / 2.", "x": 90, "d": "easy"}, {"q": "Pythagorova věta platí pro:", "o": ["pravoúhlý trojúhelník", "každý trojúhelník", "jen rovnostranný", "jen tupý"], "a": ["pravoúhlý trojúhelník"], "e": "a²+b²=c² jen v pravoúhlém.", "x": 90, "d": "easy"}, {"q": "Strany 3,4,5 tvoří:", "o": ["pravoúhlý trojúhelník", "rovnostranný", "nemožný trojúhelník", "tupý bez pravého úhlu"], "a": ["pravoúhlý trojúhelník"], "e": "3²+4²=5².", "x": 140, "d": "medium"}, {"q": "Trojúhelník se stranami 1,2,5:", "o": ["neexistuje", "je pravoúhlý", "je rovnostranný", "má obsah 5"], "a": ["neexistuje"], "e": "Součet dvou menších stran musí být větší než třetí.", "x": 170, "d": "hard"}, {"q": "Sinová věta propojuje:", "o": ["strany a sinusy protilehlých úhlů", "jen obsahy", "jen výšky", "jen obvod"], "a": ["strany a sinusy protilehlých úhlů"], "e": "a/sin α = b/sin β = c/sin γ.", "x": 170, "d": "hard"}]}, "mocninyodmocniny": {"title": "Mocniny a odmocniny", "subject": "Matematika", "theme": "math", "home": "matika.html", "ranks": [["Number Rookie", "NR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Equation Goblin", "EG", 150, "#fbbf24", "#f97316", "#ffedd5"], ["Graph Grinder", "GG", 420, "#34d399", "#047857", "#d1fae5"], ["Algebra Menace", "AM", 900, "#f59e0b", "#ef4444", "#fee2e2"], ["Function Beast", "FB", 1500, "#60a5fa", "#7c3aed", "#ede9fe"], ["Math Demon", "MD", 2400, "#fde047", "#f97316", "#fff7ed"], ["Calculator Killer", "CK", 3600, "#fb7185", "#7f1d1d", "#ffe4e6"]], "questions": [{"q": "a² znamená:", "o": ["a · a", "a + a", "2/a", "a - 2"], "a": ["a · a"], "e": "Druhá mocnina.", "x": 60, "d": "easy"}, {"q": "√9 =", "o": ["3", "9", "81", "18"], "a": ["3"], "e": "3²=9.", "x": 60, "d": "easy"}, {"q": "a⁰ pro a ≠ 0 je:", "o": ["1", "0", "a", "nelze nikdy"], "a": ["1"], "e": "Nenulové číslo na nultou je 1.", "x": 90, "d": "medium"}, {"q": "a³ · a² =", "o": ["a⁵", "a⁶", "a¹", "a"], "a": ["a⁵"], "e": "Při násobení stejných základů exponenty sčítáme.", "x": 130, "d": "medium"}, {"q": "(a²)³ =", "o": ["a⁶", "a⁵", "a⁸", "a"], "a": ["a⁶"], "e": "Mocnina mocniny: exponenty násobíme.", "x": 150, "d": "medium"}, {"q": "a⁻² znamená:", "o": ["1/a²", "-a²", "a/2", "2/a"], "a": ["1/a²"], "e": "Záporný exponent přesouvá do jmenovatele.", "x": 180, "d": "hard"}, {"q": "√(a²) pro reálné a je:", "o": ["|a|", "a vždy", "-a vždy", "a²"], "a": ["|a|"], "e": "Odmocnina je nezáporná.", "x": 210, "d": "hard"}]}, "exponencialnifunkce": {"title": "Exponenciální funkce", "subject": "Matematika", "theme": "math", "home": "matika.html", "ranks": [["Number Rookie", "NR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Equation Goblin", "EG", 150, "#fbbf24", "#f97316", "#ffedd5"], ["Graph Grinder", "GG", 420, "#34d399", "#047857", "#d1fae5"], ["Algebra Menace", "AM", 900, "#f59e0b", "#ef4444", "#fee2e2"], ["Function Beast", "FB", 1500, "#60a5fa", "#7c3aed", "#ede9fe"], ["Math Demon", "MD", 2400, "#fde047", "#f97316", "#fff7ed"], ["Calculator Killer", "CK", 3600, "#fb7185", "#7f1d1d", "#ffe4e6"]], "questions": [{"q": "Exponenciální funkce má proměnnou:", "o": ["v exponentu", "jen ve jmenovateli", "pod odmocninou", "v koeficientu"], "a": ["v exponentu"], "e": "Např. y=2ˣ.", "x": 80, "d": "easy"}, {"q": "Když a > 1 u y=aˣ, funkce:", "o": ["roste", "klesá", "je konstantní", "nemá graf"], "a": ["roste"], "e": "Základ větší než 1 → růst.", "x": 90, "d": "easy"}, {"q": "Když 0 < a < 1, funkce:", "o": ["klesá", "roste", "je přímka", "je parabola"], "a": ["klesá"], "e": "Základ mezi 0 a 1 → pokles.", "x": 90, "d": "easy"}, {"q": "2³ =", "o": ["8", "6", "9", "5"], "a": ["8"], "e": "2×2×2=8.", "x": 70, "d": "easy"}, {"q": "2ˣ = 16, x =", "o": ["4", "8", "2", "16"], "a": ["4"], "e": "2⁴=16.", "x": 130, "d": "medium"}, {"q": "Exponenciální růst se hodí pro:", "o": ["růst populace / úročení", "lineární přímku vždy", "obsah trojúhelníku", "skloňování"], "a": ["růst populace / úročení"], "e": "Modeluje násobkové změny.", "x": 150, "d": "medium"}, {"q": "Graf y=2ˣ prochází bodem:", "o": ["[0;1]", "[0;0]", "[1;0]", "[-1;0]"], "a": ["[0;1]"], "e": "a⁰=1.", "x": 160, "d": "hard"}]}, "logaritmy": {"title": "Logaritmy", "subject": "Matematika", "theme": "math", "home": "matika.html", "ranks": [["Number Rookie", "NR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Equation Goblin", "EG", 150, "#fbbf24", "#f97316", "#ffedd5"], ["Graph Grinder", "GG", 420, "#34d399", "#047857", "#d1fae5"], ["Algebra Menace", "AM", 900, "#f59e0b", "#ef4444", "#fee2e2"], ["Function Beast", "FB", 1500, "#60a5fa", "#7c3aed", "#ede9fe"], ["Math Demon", "MD", 2400, "#fde047", "#f97316", "#fff7ed"], ["Calculator Killer", "CK", 3600, "#fb7185", "#7f1d1d", "#ffe4e6"]], "questions": [{"q": "Logaritmus je inverzní k:", "o": ["exponenciále", "procentům", "sinusu", "lineární rovnici"], "a": ["exponenciále"], "e": "Logaritmus odpovídá na otázku, na kolikátou umocnit základ.", "x": 90, "d": "easy"}, {"q": "log₁₀(100) =", "o": ["2", "10", "100", "1"], "a": ["2"], "e": "10²=100.", "x": 90, "d": "easy"}, {"q": "Základ logaritmu musí být:", "o": ["kladný a různý od 1", "vždy 0", "záporný", "libovolný"], "a": ["kladný a různý od 1"], "e": "Základ a>0 a a≠1.", "x": 130, "d": "medium"}, {"q": "log₂(8) =", "o": ["3", "2", "4", "8"], "a": ["3"], "e": "2³=8.", "x": 100, "d": "easy"}, {"q": "log₃(81) =", "o": ["4", "3", "9", "27"], "a": ["4"], "e": "3⁴=81.", "x": 120, "d": "medium"}, {"q": "logₐ(xy) =", "o": ["logₐx + logₐy", "logₐx - logₐy", "logₐx · logₐy", "x+y"], "a": ["logₐx + logₐy"], "e": "Logaritmus součinu je součet logaritmů.", "x": 180, "d": "hard"}, {"q": "logₐ(x/y) =", "o": ["logₐx - logₐy", "logₐx + logₐy", "logₐx / logₐy", "x-y"], "a": ["logₐx - logₐy"], "e": "Logaritmus podílu je rozdíl.", "x": 180, "d": "hard"}]}, "ceskyrealismus": {"title": "Český realismus", "subject": "Čeština", "theme": "czech", "home": "cestina.html", "ranks": [["Text Rookie", "TR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Rozbor Rat", "RR", 150, "#fb7185", "#be123c", "#ffe4e6"], ["Pravopis Goblin", "PG", 420, "#fbbf24", "#f97316", "#ffedd5"], ["Literature Menace", "LM", 900, "#f472b6", "#8b5cf6", "#f3e8ff"], ["Syntax Slasher", "SS", 1500, "#38bdf8", "#1d4ed8", "#dbeafe"], ["Čeština Demon", "ČD", 2400, "#f43f5e", "#881337", "#ffe4e6"], ["Maturita Boss", "MB", 3600, "#f59e0b", "#7c2d12", "#ffedd5"]], "questions": [{"q": "Realismus se snaží zobrazovat svět:", "o": ["pravdivě a věcně", "jen pohádkově", "jen symbolicky", "bez reality"], "a": ["pravdivě a věcně"], "e": "Realismus chce věrně zobrazit skutečnost.", "x": 80, "d": "easy"}, {"q": "Karel Havlíček Borovský byl známý hlavně jako:", "o": ["novinář a satirik", "barokní básník", "antický dramatik", "renesanční malíř"], "a": ["novinář a satirik"], "e": "Havlíček je spojen s novinářstvím a satirou.", "x": 90, "d": "easy"}, {"q": "Babička je spojována s autorkou:", "o": ["Božena Němcová", "Karolína Světlá", "Marie Majerová", "Eliška Krásnohorská"], "a": ["Božena Němcová"], "e": "Babička = Božena Němcová.", "x": 70, "d": "easy"}, {"q": "Realistický autor typicky sleduje:", "o": ["prostředí a společenské vztahy", "jen nadpřirozené bytosti", "čistě abstraktní symboly", "antické bohy"], "a": ["prostředí a společenské vztahy"], "e": "Realismus se zajímá o společnost a každodenní život.", "x": 130, "d": "medium"}, {"q": "Satira znamená:", "o": ["kritiku pomocí humoru a zesměšnění", "oslavnou báseň", "úřední žádost", "slovní druh"], "a": ["kritiku pomocí humoru a zesměšnění"], "e": "Satira odhaluje chyby společnosti humorem.", "x": 140, "d": "medium"}, {"q": "Typický rys realismu:", "o": ["detailní popis prostředí", "únik do fantazie jako hlavní princip", "neexistence společenských problémů", "výhradně rytířská tematika"], "a": ["detailní popis prostředí"], "e": "Realismus často používá detailní popis.", "x": 150, "d": "medium"}]}, "svetovyrealismus": {"title": "Světový realismus", "subject": "Čeština", "theme": "czech", "home": "cestina.html", "ranks": [["Text Rookie", "TR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Rozbor Rat", "RR", 150, "#fb7185", "#be123c", "#ffe4e6"], ["Pravopis Goblin", "PG", 420, "#fbbf24", "#f97316", "#ffedd5"], ["Literature Menace", "LM", 900, "#f472b6", "#8b5cf6", "#f3e8ff"], ["Syntax Slasher", "SS", 1500, "#38bdf8", "#1d4ed8", "#dbeafe"], ["Čeština Demon", "ČD", 2400, "#f43f5e", "#881337", "#ffe4e6"], ["Maturita Boss", "MB", 3600, "#f59e0b", "#7c2d12", "#ffedd5"]], "questions": [{"q": "Realismus se výrazně prosazuje v:", "o": ["2. polovině 19. století", "antice", "baroku", "21. století"], "a": ["2. polovině 19. století"], "e": "Realismus je typický pro 19. století.", "x": 80, "d": "easy"}, {"q": "Balzac patří k literatuře:", "o": ["francouzské", "ruské", "české", "norské"], "a": ["francouzské"], "e": "Honoré de Balzac je francouzský realista.", "x": 80, "d": "easy"}, {"q": "Dickens patří k literatuře:", "o": ["anglické", "české", "španělské", "řecké"], "a": ["anglické"], "e": "Charles Dickens je anglický autor.", "x": 80, "d": "easy"}, {"q": "Dostojevskij je spojen s:", "o": ["ruským realismem", "českým romantismem", "francouzským klasicismem", "antickou tragédií"], "a": ["ruským realismem"], "e": "Dostojevskij patří k ruskému realismu.", "x": 120, "d": "medium"}, {"q": "Realismus často kritizuje:", "o": ["společenské poměry", "jen kouzla", "jen antickou mytologii", "jen rytíře"], "a": ["společenské poměry"], "e": "Realisté často ukazují sociální problémy.", "x": 130, "d": "medium"}, {"q": "Naturalismus bývá oproti realismu:", "o": ["drsnější a determinističtější", "vždy pohádkovější", "výhradně komediální", "bez reality"], "a": ["drsnější a determinističtější"], "e": "Naturalismus zdůrazňuje vliv prostředí, dědičnosti a pudů.", "x": 190, "d": "hard"}]}, "administrativnistyl": {"title": "Administrativní styl", "subject": "Čeština", "theme": "czech", "home": "cestina.html", "ranks": [["Text Rookie", "TR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Rozbor Rat", "RR", 150, "#fb7185", "#be123c", "#ffe4e6"], ["Pravopis Goblin", "PG", 420, "#fbbf24", "#f97316", "#ffedd5"], ["Literature Menace", "LM", 900, "#f472b6", "#8b5cf6", "#f3e8ff"], ["Syntax Slasher", "SS", 1500, "#38bdf8", "#1d4ed8", "#dbeafe"], ["Čeština Demon", "ČD", 2400, "#f43f5e", "#881337", "#ffe4e6"], ["Maturita Boss", "MB", 3600, "#f59e0b", "#7c2d12", "#ffedd5"]], "questions": [{"q": "Administrativní styl je typický pro:", "o": ["úřední komunikaci", "lyrickou poezii", "pohádky", "soukromý deník"], "a": ["úřední komunikaci"], "e": "Je to styl úředních a formálních textů.", "x": 80, "d": "easy"}, {"q": "Jazyk administrativního stylu bývá:", "o": ["spisovný a neutrální", "nespisovný a emotivní", "básnický", "slangový"], "a": ["spisovný a neutrální"], "e": "Cílem je věcnost a jasnost.", "x": 90, "d": "easy"}, {"q": "Typický útvar:", "o": ["žádost", "balada", "sonet", "román"], "a": ["žádost"], "e": "Žádost je administrativní útvar.", "x": 80, "d": "easy"}, {"q": "Administrativní styl se vyhýbá:", "o": ["citovému zabarvení", "přesnosti", "spisovnosti", "jasné struktuře"], "a": ["citovému zabarvení"], "e": "Je věcný a neutrální.", "x": 130, "d": "medium"}, {"q": "Funkce administrativního stylu je hlavně:", "o": ["sdělovací a řídicí", "estetická", "zábavná", "magická"], "a": ["sdělovací a řídicí"], "e": "Řídí úřední/pracovní komunikaci.", "x": 150, "d": "medium"}]}, "rozbory": {"title": "Rozbory textu", "subject": "Čeština", "theme": "czech", "home": "cestina.html", "ranks": [["Text Rookie", "TR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Rozbor Rat", "RR", 150, "#fb7185", "#be123c", "#ffe4e6"], ["Pravopis Goblin", "PG", 420, "#fbbf24", "#f97316", "#ffedd5"], ["Literature Menace", "LM", 900, "#f472b6", "#8b5cf6", "#f3e8ff"], ["Syntax Slasher", "SS", 1500, "#38bdf8", "#1d4ed8", "#dbeafe"], ["Čeština Demon", "ČD", 2400, "#f43f5e", "#881337", "#ffe4e6"], ["Maturita Boss", "MB", 3600, "#f59e0b", "#7c2d12", "#ffedd5"]], "questions": [{"q": "U rozboru textu je důležité určit:", "o": ["téma, funkci a prostředky", "jen počet písmen", "jen font", "jen délku věty"], "a": ["téma, funkci a prostředky"], "e": "Rozbor řeší obsah, formu i funkci.", "x": 90, "d": "easy"}, {"q": "Kompozice znamená:", "o": ["uspořádání textu", "pravopisné chyby", "název autora", "barvu papíru"], "a": ["uspořádání textu"], "e": "Kompozice = výstavba textu.", "x": 80, "d": "easy"}, {"q": "Jazykové prostředky jsou např.:", "o": ["metafora, přirovnání, opakování", "jen odstavce", "jen číslo stránky", "jen délka díla"], "a": ["metafora, přirovnání, opakování"], "e": "Jsou konkrétní prostředky výstavby sdělení.", "x": 90, "d": "easy"}, {"q": "Téma textu je:", "o": ["o čem text je", "kdo ho vytiskl", "počet vět", "typ papíru"], "a": ["o čem text je"], "e": "Téma = základní obsahové zaměření.", "x": 100, "d": "medium"}, {"q": "Funkce textu znamená:", "o": ["k čemu text slouží", "kolik má stran", "jaký má font", "kde leží kniha"], "a": ["k čemu text slouží"], "e": "Např. informovat, přesvědčit, pobavit.", "x": 130, "d": "medium"}, {"q": "Motiv je:", "o": ["menší obsahový prvek v textu", "autorův podpis", "typ písma", "pravopisné pravidlo"], "a": ["menší obsahový prvek v textu"], "e": "Motiv je dílčí prvek tématu.", "x": 170, "d": "hard"}]}, "rozbor-umeleckeho-textu": {"title": "Rozbor uměleckého textu", "subject": "Čeština", "theme": "czech", "home": "cestina.html", "ranks": [["Text Rookie", "TR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Rozbor Rat", "RR", 150, "#fb7185", "#be123c", "#ffe4e6"], ["Pravopis Goblin", "PG", 420, "#fbbf24", "#f97316", "#ffedd5"], ["Literature Menace", "LM", 900, "#f472b6", "#8b5cf6", "#f3e8ff"], ["Syntax Slasher", "SS", 1500, "#38bdf8", "#1d4ed8", "#dbeafe"], ["Čeština Demon", "ČD", 2400, "#f43f5e", "#881337", "#ffe4e6"], ["Maturita Boss", "MB", 3600, "#f59e0b", "#7c2d12", "#ffedd5"]], "questions": [{"q": "Umělecký text často využívá:", "o": ["obrazná pojmenování", "jen úřední formulace", "jen tabulky", "jen paragrafy"], "a": ["obrazná pojmenování"], "e": "Umělecký text pracuje s estetickou funkcí.", "x": 80, "d": "easy"}, {"q": "Vypravěč je:", "o": ["ten, kdo vypráví příběh", "autorův podpis", "název kapitoly", "slovní druh"], "a": ["ten, kdo vypráví příběh"], "e": "Vypravěč není automaticky autor.", "x": 90, "d": "easy"}, {"q": "Lyrika je typicky zaměřená na:", "o": ["pocity a dojmy", "úřední žádosti", "návody", "smlouvy"], "a": ["pocity a dojmy"], "e": "Lyrika zachycuje nálady a emoce.", "x": 80, "d": "easy"}, {"q": "Epika je typicky založena na:", "o": ["ději a vyprávění", "úředním formuláři", "pravopisném pravidlu", "pouze pocitu bez děje"], "a": ["ději a vyprávění"], "e": "Epika má vypravování a děj.", "x": 120, "d": "medium"}, {"q": "Metafora je:", "o": ["přenesené pojmenování", "přímé srovnání s jako", "úřední formule", "slovesný čas"], "a": ["přenesené pojmenování"], "e": "Metafora přenáší význam.", "x": 150, "d": "medium"}, {"q": "Přirovnání často poznáš podle:", "o": ["jako / jak", "nebo / ale", "se / si", "by / bych"], "a": ["jako / jak"], "e": "Přirovnání často používá jako/jak.", "x": 120, "d": "medium"}]}, "rozbor-neumeleckeho-textu": {"title": "Rozbor neuměleckého textu", "subject": "Čeština", "theme": "czech", "home": "cestina.html", "ranks": [["Text Rookie", "TR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Rozbor Rat", "RR", 150, "#fb7185", "#be123c", "#ffe4e6"], ["Pravopis Goblin", "PG", 420, "#fbbf24", "#f97316", "#ffedd5"], ["Literature Menace", "LM", 900, "#f472b6", "#8b5cf6", "#f3e8ff"], ["Syntax Slasher", "SS", 1500, "#38bdf8", "#1d4ed8", "#dbeafe"], ["Čeština Demon", "ČD", 2400, "#f43f5e", "#881337", "#ffe4e6"], ["Maturita Boss", "MB", 3600, "#f59e0b", "#7c2d12", "#ffedd5"]], "questions": [{"q": "Neumělecký text se často zaměřuje na:", "o": ["informaci a sdělení", "fikční příběh", "rým", "lyrický obraz"], "a": ["informaci a sdělení"], "e": "Cílem bývá informovat nebo přesvědčit.", "x": 80, "d": "easy"}, {"q": "U neuměleckého textu řešíme:", "o": ["funkci a adresáta", "jen postavy", "jen verše", "jen rým"], "a": ["funkci a adresáta"], "e": "Adresát a účel jsou klíčové.", "x": 90, "d": "easy"}, {"q": "Publicistický text patří mezi:", "o": ["neumělecké texty", "pohádky", "balady", "dramata"], "a": ["neumělecké texty"], "e": "Publicistika je neumělecký styl.", "x": 80, "d": "easy"}, {"q": "Odborný styl má být hlavně:", "o": ["přesný a věcný", "co nejvíc emotivní", "nespisovný", "bez faktů"], "a": ["přesný a věcný"], "e": "Odborný text vysvětluje přesně.", "x": 130, "d": "medium"}, {"q": "Argumentační text chce často:", "o": ["přesvědčit adresáta", "vyprávět pohádku", "rýmovat", "popřít fakta"], "a": ["přesvědčit adresáta"], "e": "Argumentace staví důvody pro názor.", "x": 140, "d": "medium"}]}, "rozbor-checklist": {"title": "Checklist k rozboru", "subject": "Čeština", "theme": "czech", "home": "cestina.html", "ranks": [["Text Rookie", "TR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Rozbor Rat", "RR", 150, "#fb7185", "#be123c", "#ffe4e6"], ["Pravopis Goblin", "PG", 420, "#fbbf24", "#f97316", "#ffedd5"], ["Literature Menace", "LM", 900, "#f472b6", "#8b5cf6", "#f3e8ff"], ["Syntax Slasher", "SS", 1500, "#38bdf8", "#1d4ed8", "#dbeafe"], ["Čeština Demon", "ČD", 2400, "#f43f5e", "#881337", "#ffe4e6"], ["Maturita Boss", "MB", 3600, "#f59e0b", "#7c2d12", "#ffedd5"]], "questions": [{"q": "Checklist slouží k tomu, aby:", "o": ["nic důležitého nevypadlo", "nahradil veškeré učení", "zrušil pravidla", "změnil autora"], "a": ["nic důležitého nevypadlo"], "e": "Checklist je kontrola postupu.", "x": 80, "d": "easy"}, {"q": "První krok rozboru bývá:", "o": ["pochopit téma textu", "počítat čárky", "přeskočit zadání", "napsat závěr"], "a": ["pochopit téma textu"], "e": "Nejdřív musíš vědět, o čem text je.", "x": 80, "d": "easy"}, {"q": "U rozboru je dobré postupovat:", "o": ["systematicky", "náhodně", "bez čtení textu", "jen podle intuice"], "a": ["systematicky"], "e": "Systematika brání vynechání bodů.", "x": 80, "d": "easy"}, {"q": "Po tématu textu často řešíme:", "o": ["funkci a adresáta", "barvu papíru", "počet autorů vždy", "cenu knihy"], "a": ["funkci a adresáta"], "e": "Tyto body pomáhají pochopit účel textu.", "x": 110, "d": "medium"}, {"q": "Checklist není:", "o": ["náhrada pochopení textu", "pomůcka pro pořadí", "kontrola bodů", "užitečný tahák"], "a": ["náhrada pochopení textu"], "e": "Checklist pomáhá, ale text musíš pochopit.", "x": 150, "d": "hard"}]}, "tvaroslovi": {"title": "Tvarosloví", "subject": "Čeština", "theme": "czech", "home": "cestina.html", "ranks": [["Text Rookie", "TR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Rozbor Rat", "RR", 150, "#fb7185", "#be123c", "#ffe4e6"], ["Pravopis Goblin", "PG", 420, "#fbbf24", "#f97316", "#ffedd5"], ["Literature Menace", "LM", 900, "#f472b6", "#8b5cf6", "#f3e8ff"], ["Syntax Slasher", "SS", 1500, "#38bdf8", "#1d4ed8", "#dbeafe"], ["Čeština Demon", "ČD", 2400, "#f43f5e", "#881337", "#ffe4e6"], ["Maturita Boss", "MB", 3600, "#f59e0b", "#7c2d12", "#ffedd5"]], "questions": [{"q": "Tvarosloví zkoumá:", "o": ["tvary slov", "stavbu věty", "literární období", "kompozici textu"], "a": ["tvary slov"], "e": "Tvarosloví = morfologie.", "x": 80, "d": "easy"}, {"q": "Pád je kategorie hlavně u:", "o": ["jmen", "sloves", "citoslovcí", "předložek"], "a": ["jmen"], "e": "Pád určujeme u jmen, zájmen, číslovek.", "x": 90, "d": "easy"}, {"q": "Osoba je kategorie u:", "o": ["sloves", "podstatných jmen", "příslovcí", "spojek"], "a": ["sloves"], "e": "Slovesa mají osobu.", "x": 90, "d": "easy"}, {"q": "Ohebné slovní druhy:", "o": ["mění tvar", "nikdy nemění tvar", "jsou jen spojky", "jsou jen příslovce"], "a": ["mění tvar"], "e": "Ohebné se skloňují nebo časují.", "x": 100, "d": "medium"}, {"q": "Slovesný vid může být:", "o": ["dokonavý a nedokonavý", "tvrdý a měkký", "přímý a nepřímý", "určitý a neurčitý vždy"], "a": ["dokonavý a nedokonavý"], "e": "Vid řeší dokončenost děje.", "x": 140, "d": "medium"}]}, "slovnidruhy": {"title": "Slovní druhy", "subject": "Čeština", "theme": "czech", "home": "cestina.html", "ranks": [["Text Rookie", "TR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Rozbor Rat", "RR", 150, "#fb7185", "#be123c", "#ffe4e6"], ["Pravopis Goblin", "PG", 420, "#fbbf24", "#f97316", "#ffedd5"], ["Literature Menace", "LM", 900, "#f472b6", "#8b5cf6", "#f3e8ff"], ["Syntax Slasher", "SS", 1500, "#38bdf8", "#1d4ed8", "#dbeafe"], ["Čeština Demon", "ČD", 2400, "#f43f5e", "#881337", "#ffe4e6"], ["Maturita Boss", "MB", 3600, "#f59e0b", "#7c2d12", "#ffedd5"]], "questions": [{"q": "Slovní druhy dělíme na:", "o": ["ohebné a neohebné", "jen tvrdé a měkké", "jen krátké a dlouhé", "jen větné a nevětné"], "a": ["ohebné a neohebné"], "e": "Ohebné mění tvar, neohebné ne.", "x": 80, "d": "easy"}, {"q": "Podstatné jméno označuje:", "o": ["osoby, zvířata, věci, vlastnosti, děje", "jen činnosti", "jen okolnosti", "jen spojení vět"], "a": ["osoby, zvířata, věci, vlastnosti, děje"], "e": "Např. člověk, pes, stůl, radost.", "x": 80, "d": "easy"}, {"q": "Příslovce je:", "o": ["neohebný slovní druh", "ohebný slovní druh", "slovesná kategorie", "pád"], "a": ["neohebný slovní druh"], "e": "Příslovce se běžně neskloňuje ani nečasuje.", "x": 80, "d": "easy"}, {"q": "Spojky slouží k:", "o": ["spojování slov nebo vět", "vyjadřování děje", "pojmenování osob", "stupňování vlastností"], "a": ["spojování slov nebo vět"], "e": "Spojky napojují části výpovědi.", "x": 100, "d": "medium"}, {"q": "Číslovka označuje:", "o": ["počet nebo pořadí", "děj", "vlastnost", "okolnost místa"], "a": ["počet nebo pořadí"], "e": "Číslovky: jeden, druhý, několik.", "x": 90, "d": "easy"}]}, "slovesa": {"title": "Slovesa", "subject": "Čeština", "theme": "czech", "home": "cestina.html", "ranks": [["Text Rookie", "TR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Rozbor Rat", "RR", 150, "#fb7185", "#be123c", "#ffe4e6"], ["Pravopis Goblin", "PG", 420, "#fbbf24", "#f97316", "#ffedd5"], ["Literature Menace", "LM", 900, "#f472b6", "#8b5cf6", "#f3e8ff"], ["Syntax Slasher", "SS", 1500, "#38bdf8", "#1d4ed8", "#dbeafe"], ["Čeština Demon", "ČD", 2400, "#f43f5e", "#881337", "#ffe4e6"], ["Maturita Boss", "MB", 3600, "#f59e0b", "#7c2d12", "#ffedd5"]], "questions": [{"q": "Slovesa vyjadřují:", "o": ["děj, stav nebo změnu stavu", "jen osoby", "jen vlastnosti", "jen spojky"], "a": ["děj, stav nebo změnu stavu"], "e": "Např. běžet, být, zestárnout.", "x": 80, "d": "easy"}, {"q": "Čas u sloves může být:", "o": ["minulý, přítomný, budoucí", "první, druhý, třetí", "měkký, tvrdý, obojetný", "jednotný, množný"], "a": ["minulý, přítomný, budoucí"], "e": "Základní slovesné časy.", "x": 80, "d": "easy"}, {"q": "Způsob rozkazovací poznáš u věty:", "o": ["Přijď sem!", "Přišel jsem.", "Přijdu zítra.", "Přicházím."], "a": ["Přijď sem!"], "e": "Rozkazovací způsob vyjadřuje výzvu/příkaz.", "x": 90, "d": "easy"}, {"q": "Podmiňovací způsob je ve větě:", "o": ["Přišel bych.", "Přišel jsem.", "Přijdu.", "Přijď!"], "a": ["Přišel bych"], "e": "Bych/bys/by často značí kondicionál.", "x": 130, "d": "medium"}, {"q": "Slovesný rod činný znamená:", "o": ["podmět děj vykonává", "podmět je dějem zasažen", "sloveso nemá čas", "jde vždy o rozkaz"], "a": ["podmět děj vykonává"], "e": "Činný rod: Petr píše úkol.", "x": 140, "d": "medium"}]}, "pravopis-hub": {"title": "Pravopis", "subject": "Čeština", "theme": "czech", "home": "cestina.html", "ranks": [["Text Rookie", "TR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Rozbor Rat", "RR", 150, "#fb7185", "#be123c", "#ffe4e6"], ["Pravopis Goblin", "PG", 420, "#fbbf24", "#f97316", "#ffedd5"], ["Literature Menace", "LM", 900, "#f472b6", "#8b5cf6", "#f3e8ff"], ["Syntax Slasher", "SS", 1500, "#38bdf8", "#1d4ed8", "#dbeafe"], ["Čeština Demon", "ČD", 2400, "#f43f5e", "#881337", "#ffe4e6"], ["Maturita Boss", "MB", 3600, "#f59e0b", "#7c2d12", "#ffedd5"]], "questions": [{"q": "Pravopis řeší:", "o": ["správné psaní slov a vět", "jen literární období", "jen děj knihy", "jen výšku písma"], "a": ["správné psaní slov a vět"], "e": "Pravopis = pravidla psaní.", "x": 70, "d": "easy"}, {"q": "Po tvrdých souhláskách se typicky píše:", "o": ["y/ý", "i/í", "ě", "ú vždy"], "a": ["y/ý"], "e": "h, ch, k, r, d, t, n.", "x": 80, "d": "easy"}, {"q": "Vyjmenovaná slova pomáhají určit:", "o": ["i/y po obojetných souhláskách", "čárky v souvětí", "slovní druhy", "literární směr"], "a": ["i/y po obojetných souhláskách"], "e": "b, f, l, m, p, s, v, z.", "x": 90, "d": "easy"}, {"q": "Shoda podmětu s přísudkem řeší:", "o": ["koncovku příčestí", "vždy čárku před že", "slovní druh", "literární směr"], "a": ["koncovku příčestí"], "e": "Např. muži šli, ženy šly.", "x": 130, "d": "medium"}, {"q": "Interpunkce v souvětí často odděluje:", "o": ["věty", "jen slabiky", "jen písmena", "jen názvy knih"], "a": ["věty"], "e": "Čárky oddělují věty a vložené konstrukce.", "x": 120, "d": "medium"}]}, "pravopis": {"title": "Pravopis – přehled", "subject": "Čeština", "theme": "czech", "home": "cestina.html", "ranks": [["Text Rookie", "TR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Rozbor Rat", "RR", 150, "#fb7185", "#be123c", "#ffe4e6"], ["Pravopis Goblin", "PG", 420, "#fbbf24", "#f97316", "#ffedd5"], ["Literature Menace", "LM", 900, "#f472b6", "#8b5cf6", "#f3e8ff"], ["Syntax Slasher", "SS", 1500, "#38bdf8", "#1d4ed8", "#dbeafe"], ["Čeština Demon", "ČD", 2400, "#f43f5e", "#881337", "#ffe4e6"], ["Maturita Boss", "MB", 3600, "#f59e0b", "#7c2d12", "#ffedd5"]], "questions": [{"q": "Ve shodě podmětu s přísudkem píšeme u mužského životného:", "o": ["i", "y", "a", "e"], "a": ["i"], "e": "Chlapci přišli.", "x": 100, "d": "medium"}, {"q": "Děti ____ domů.", "o": ["šly", "šli", "šla", "šlo"], "a": ["šly"], "e": "Děti šly.", "x": 100, "d": "medium"}, {"q": "Mě/mně se určuje podle:", "o": ["pádu a tvaru zájmena já", "počtu slabik", "délky věty", "interpunkce"], "a": ["pádu a tvaru zájmena já"], "e": "Pomáhá nahradit tvary mě/mně.", "x": 120, "d": "medium"}, {"q": "Muži pracoval_.", "o": ["i", "y", "a", "o"], "a": ["i"], "e": "Muži = mužský životný, množné číslo.", "x": 130, "d": "medium"}, {"q": "Ženy přišl_.", "o": ["y", "i", "a", "o"], "a": ["y"], "e": "Ženy = ženský rod, množné číslo.", "x": 110, "d": "medium"}, {"q": "Koťata spal_.", "o": ["a", "y", "i", "o"], "a": ["a"], "e": "Koťata = střední rod množné číslo.", "x": 130, "d": "medium"}]}, "vetnerozbory": {"title": "Větné rozbory", "subject": "Čeština", "theme": "czech", "home": "cestina.html", "ranks": [["Text Rookie", "TR", 0, "#94a3b8", "#334155", "#e2e8f0"], ["Rozbor Rat", "RR", 150, "#fb7185", "#be123c", "#ffe4e6"], ["Pravopis Goblin", "PG", 420, "#fbbf24", "#f97316", "#ffedd5"], ["Literature Menace", "LM", 900, "#f472b6", "#8b5cf6", "#f3e8ff"], ["Syntax Slasher", "SS", 1500, "#38bdf8", "#1d4ed8", "#dbeafe"], ["Čeština Demon", "ČD", 2400, "#f43f5e", "#881337", "#ffe4e6"], ["Maturita Boss", "MB", 3600, "#f59e0b", "#7c2d12", "#ffedd5"]], "questions": [{"q": "Podmět je:", "o": ["kdo/co něco dělá nebo nese děj", "vždy poslední slovo", "jen sloveso", "druh věty"], "a": ["kdo/co něco dělá nebo nese děj"], "e": "Podmět se ptá kdo/co.", "x": 90, "d": "easy"}, {"q": "Přísudek bývá nejčastěji vyjádřen:", "o": ["slovesem", "předložkou", "spojkou", "citoslovcem"], "a": ["slovesem"], "e": "Přísudek je jádro věty.", "x": 80, "d": "easy"}, {"q": "Předmět se ptá často:", "o": ["pádovými otázkami kromě 1. a 5. pádu", "kdy? kde?", "jak moc?", "proč vždy"], "a": ["pádovými otázkami kromě 1. a 5. pádu"], "e": "Předmět doplňuje sloveso.", "x": 120, "d": "medium"}, {"q": "Příslovečné určení místa odpovídá na:", "o": ["kde? kam? odkud?", "kdo? co?", "jaký? který?", "čí?"], "a": ["kde? kam? odkud?"], "e": "Místo = kde/kam/odkud.", "x": 90, "d": "easy"}, {"q": "Přívlastek rozvíjí nejčastěji:", "o": ["podstatné jméno", "sloveso", "celou větu vždy", "předložku"], "a": ["podstatné jméno"], "e": "Přívlastek určuje vlastnost jména.", "x": 130, "d": "medium"}, {"q": "Doplněk se vztahuje:", "o": ["ke jménu i slovesu zároveň", "jen ke spojce", "jen k čárce", "jen k odstavci"], "a": ["ke jménu i slovesu zároveň"], "e": "Doplněk má dvojí vztah.", "x": 190, "d": "hard"}]}};
+const $ = id => document.getElementById(id);
+const params = new URLSearchParams(location.search);
+const subjectMap = {english:"passivevoice", math:"linearnirovnice", czech:"ceskyrealismus"};
+let selectedKey = params.get("topic") || subjectMap[params.get("subject")] || "passivevoice";
+if(!BASE_BANK[selectedKey]) selectedKey = "passivevoice";
+
+let order=[], idx=0, current=null, correct=0, total=0, streak=0, mistakes=0, gained=0, locked=false;
+let currentMode="choice", currentDifficulty="mixed";
+
+function norm(s){
+  return String(s||"").toLowerCase().trim()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/[.!?;:]/g,"").replace(/\s+/g," ");
+}
+function shuffle(arr){ return [...arr].sort(()=>Math.random()-.5); }
+function choice(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function q(q,o,a,e,x=100,d="medium"){ return {q,o,a:Array.isArray(a)?a:[a],e,x,d}; }
+
+function generatedMath(key){
+  const out=[];
+  if(key==="linearnirovnice"){
+    for(let i=0;i<35;i++){
+      const a=choice([2,3,4,5,6,7,8,9]);
+      const x=choice([-8,-6,-5,-4,-3,-2,2,3,4,5,6,7,8,9]);
+      const b=choice([-12,-9,-7,-5,-3,3,5,7,9,12]);
+      const c=a*x+b;
+      const opts=shuffle([String(x),String(x+1),String(x-1),String(-x)]);
+      out.push(q(`${a}x ${b>=0?"+ "+b:"- "+Math.abs(b)} = ${c}, x =`,opts,String(x),`Odečti ${b}, pak vyděl ${a}.`,130,"medium"));
+    }
+  }
+  if(key==="procenta"){
+    const bases=[200,300,400,500,600,800,1000,1200,1500,2000];
+    const pcts=[5,10,12,15,20,25,30,40];
+    bases.forEach(b=>pcts.forEach(p=>{
+      const val=b*p/100;
+      if(Number.isInteger(val)) out.push(q(`${p} % z ${b} je:`,shuffle([String(val),String(val+p),String(b-p),String(Math.round(val/2))]),String(val),`${b} × ${p/100} = ${val}.`,100,"medium"));
+    }));
+    for(let i=0;i<20;i++){
+      const old=choice([80,100,120,150,200,250,400,500]);
+      const neu=old+choice([10,20,25,40,50,100]);
+      const pct=Math.round((neu-old)/old*100);
+      out.push(q(`Změna z ${old} na ${neu} je přibližně:`,shuffle([`${pct} %`,`${pct+10} %`,`${Math.max(1,pct-10)} %`,`${neu-old} %`]),`${pct} %`,`Změna / původní hodnota × 100.`,170,"hard"));
+    }
+  }
+  if(key==="kvadratickerovnice"){
+    const pairs=[[-1,-2],[-2,-3],[-3,-4],[-1,5],[2,3],[3,4],[-5,2],[-6,1]];
+    pairs.forEach(([r1,r2])=>{
+      const b=-(r1+r2), c=r1*r2;
+      out.push(q(`x² ${b>=0?"+ "+b:"- "+Math.abs(b)}x ${c>=0?"+ "+c:"- "+Math.abs(c)} = 0 má kořeny:`,shuffle([`${r1} a ${r2}`,`${-r1} a ${-r2}`,`${r1+1} a ${r2}`,`žádné`]),`${r1} a ${r2}`,`Použij rozklad podle kořenů.`,190,"hard"));
+    });
+  }
+  if(key==="funkce"){
+    for(let k of [-4,-3,-2,-1,1,2,3,4,5]) for(let qv of [-6,-3,0,2,5]){
+      out.push(q(`U funkce y = ${k}x ${qv>=0?"+ "+qv:"- "+Math.abs(qv)} je směrnice:`,shuffle([String(k),String(qv),String(-k),String(k+qv)]),String(k),`Ve tvaru y=kx+q je směrnice k.`,120,"medium"));
+    }
+  }
+  if(key==="exponencialnifunkce"){
+    [[2,8,3],[2,32,5],[3,27,3],[3,81,4],[5,125,3]].forEach(([a,v,x])=>out.push(q(`${a}ˣ = ${v}, x =`,shuffle([String(x),String(x+1),String(x-1),String(a)]),String(x),`${a}^${x} = ${v}.`,150,"medium")));
+  }
+  if(key==="logaritmy"){
+    [[2,16,4],[2,32,5],[3,27,3],[3,81,4],[5,25,2],[10,1000,3]].forEach(([a,v,x])=>out.push(q(`log₍${a}₎(${v}) =`,shuffle([String(x),String(x+1),String(x-1),String(a)]),String(x),`${a}^${x} = ${v}.`,150,"medium")));
+  }
+  return out;
+}
+
+
+function allTopicKeys(){ return Object.keys(BASE_BANK); }
+function subjectKeys(subject){
+  return Object.entries(BASE_BANK).filter(([k,t]) => t.subject === subject).map(([k]) => k);
+}
+function uniqueQuestions(list){
+  const seen = new Set(), out = [];
+  for(const item of list){
+    const sig = norm(item.q) + "::" + norm((item.a||[])[0]||"");
+    if(!seen.has(sig)){ seen.add(sig); out.push(item); }
+  }
+  return out;
+}
+function bankForKeys(keys){
+  let all = [];
+  keys.forEach(k => {
+    const title = BASE_BANK[k]?.title || k;
+    all = all.concat((BASE_BANK[k]?.questions || []).map(x => ({...x, _source:k, _sourceTitle:title})));
+    all = all.concat(generatedMath(k).map(x => ({...x, _source:k, _sourceTitle:title})));
+  });
+  return uniqueQuestions(all);
+}
+function expandedPoolForSelected(){
+  const selected = BASE_BANK[selectedKey];
+  let own = bankForKeys([selectedKey]);
+  let sameSubject = bankForKeys(subjectKeys(selected.subject));
+  let all = bankForKeys(allTopicKeys());
+  return uniqueQuestions([...own, ...sameSubject, ...all]);
+}
+
+function topicBank(key){
+  return [...(BASE_BANK[key]?.questions||[]), ...generatedMath(key)];
+}
+function filteredBank(){
+  let pool = expandedPoolForSelected();
+  if(currentDifficulty==="medium"){
+    const medium = pool.filter(x => x.d !== "easy");
+    if(medium.length >= 12) pool = medium;
+  }
+  if(currentDifficulty==="hard"){
+    const hard = pool.filter(x => x.d === "hard");
+    if(hard.length >= 12) pool = hard;
+    else pool = pool.filter(x => x.d !== "easy");
+  }
+  return shuffle(uniqueQuestions(pool));
+}
+
+function rankKey(){ return "fl_rank_xp_stable_" + selectedKey; }
+function getXP(){ return Number(localStorage.getItem(rankKey()) || 0); }
+function setXP(x){ localStorage.setItem(rankKey(), String(Math.max(0, Math.round(x)))); }
+function ranks(){ return BASE_BANK[selectedKey].ranks; }
+function rankSvg(r){
+  const id = "rg" + Math.random().toString(16).slice(2);
+  const sm = r[1].length > 1 ? " rank-small" : "";
+  return `<svg viewBox="0 0 64 64"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="${r[3]}"/><stop offset="100%" stop-color="${r[4]}"/></linearGradient></defs><path d="M32 3 L56 15 V34 C56 48 44 58 32 62 C20 58 8 48 8 34 V15 Z" fill="url(#${id})" stroke="rgba(255,255,255,.82)" stroke-width="2"/><circle cx="32" cy="32" r="14" fill="${r[5]}" opacity=".92"/><text x="32" y="33" class="rank-letter${sm}">${r[1]}</text></svg>`;
+}
+function currentRank(){
+  const xp = getXP();
+  const rs = ranks();
+  let c = rs[0], n = rs[1] || null;
+  for(let i=0;i<rs.length;i++) if(xp >= rs[i][2]){ c = rs[i]; n = rs[i+1] || null; }
+  return {c,n,xp};
+}
+function updateRank(){
+  const {c,n,xp} = currentRank();
+  $("rankIcon").innerHTML = rankSvg(c);
+  $("rankName").textContent = c[0];
+  $("xpNow").textContent = xp + " XP";
+  if(n){
+    $("rankSub").textContent = n[0] + " za " + (n[2]-xp) + " XP";
+    $("rankBar").style.width = Math.max(0, Math.min(100, (xp-c[2])/(n[2]-c[2])*100)) + "%";
+  } else {
+    $("rankSub").textContent = "Max rank · " + xp + " XP";
+    $("rankBar").style.width = "100%";
+  }
+}
+
+function fillTopics(){
+  const select = $("topicSelect");
+  select.innerHTML = "";
+  const groups = {};
+  Object.entries(BASE_BANK).forEach(([key,t]) => {
+    if(!groups[t.subject]) groups[t.subject] = [];
+    groups[t.subject].push([key,t.title]);
+  });
+  Object.entries(groups).forEach(([subject,items]) => {
+    const og = document.createElement("optgroup");
+    og.label = subject;
+    items.forEach(([key,title]) => {
+      const op = document.createElement("option");
+      op.value = key;
+      op.textContent = title;
+      og.appendChild(op);
+    });
+    select.appendChild(og);
+  });
+  select.value = selectedKey;
+}
+function applyTopic(){
+  const t = BASE_BANK[selectedKey];
+  document.body.className = t.theme;
+  $("topicName").textContent = t.title;
+  $("topicSubject").textContent = t.subject;
+  $("theoryLink").href = t.home + "?v=finalsell1781348453";
+  const count = filteredBank().length;
+  $("bankCount").textContent = count;
+  $("bankInfo").textContent = `Aktuální pool po rozšíření: ${count} otázek. Malá témata se doplní navazujícími otázkami ze stejného předmětu místo opakování.`;
+  updateRank();
+}
+
+function buildOrder(){
+  currentDifficulty = $("difficultySelect").value;
+  currentMode = $("modeSelect").value;
+  const len = Number($("lengthSelect").value);
+  const pool = filteredBank();
+  order = pool.slice(0, Math.min(len, pool.length));
+  if(order.length < len){
+    // Only after the whole expanded pool is exhausted do we allow a second round.
+    const refill = shuffle(pool).map(x => ({...x, q:x.q + " "}));
+    order = order.concat(refill.slice(0, len - order.length));
+  }
+  idx = 0; correct = 0; total = 0; streak = 0; mistakes = 0; gained = 0; locked = false;
+}
+function renderQuestion(){
+  if(idx >= order.length) return finish();
+  current = order[idx];
+  locked = false;
+  total = idx + 1;
+  $("qCounter").textContent = "Otázka " + total + " / " + order.length;
+  $("scorePill").textContent = correct + " / " + (total-1);
+  $("streakPill").textContent = streak + "x streak";
+  $("difficultyPill").textContent = current.d || "mix";
+  $("progressBar").style.width = Math.round((idx / order.length) * 100) + "%";
+  $("questionLabel").textContent = BASE_BANK[selectedKey].title;
+  $("questionText").textContent = current.q;
+  $("feedback").className = "test-feedback";
+  $("feedback").textContent = currentMode === "type" ? "Napiš krátkou odpověď 👇" : "Vyber odpověď 👇";
+  $("nextBtn").disabled = true;
+  $("mistakesNow").textContent = mistakes;
+  const mode = currentMode === "mixed" ? (Math.random() < .55 ? "choice" : "type") : currentMode;
+  if(mode === "type"){
+    $("options").classList.add("hidden");
+    $("typeBox").classList.remove("hidden");
+    $("answerInput").value = "";
+    setTimeout(()=>$("answerInput").focus(),50);
+  } else {
+    $("typeBox").classList.add("hidden");
+    $("options").classList.remove("hidden");
+    const opts = shuffle(current.o || current.a);
+    $("options").innerHTML = opts.map(o => `<button class="test-option" type="button">${o}</button>`).join("");
+    document.querySelectorAll(".test-option").forEach(btn => btn.onclick = () => answer(btn.textContent, btn));
+  }
+}
+function score(raw){
+  const n = norm(raw);
+  return (current.a || []).some(a => norm(a) === n || n.includes(norm(a)) || norm(a).includes(n));
+}
+function answer(raw, button=null){
+  if(locked) return;
+  locked = true;
+  const ok = score(raw);
+  document.querySelectorAll(".test-option").forEach(b => {
+    if(score(b.textContent)) b.classList.add("correct");
+    b.disabled = true;
+  });
+  const diffMult = current.d === "hard" ? 1.45 : current.d === "medium" ? 1.15 : 1;
+  if(ok){
+    correct++;
+    streak++;
+    const add = Math.round(((current.x || 80) * diffMult) + Math.min(180, streak*10));
+    gained += add;
+    setXP(getXP() + add);
+    $("feedback").className = "test-feedback good";
+    $("feedback").innerHTML = `✅ Správně. +${add} XP · ${streak}x streak<br>${current.e || ""}`;
+  } else {
+    mistakes++;
+    streak = 0;
+    if(button) button.classList.add("wrong");
+    $("feedback").className = "test-feedback bad";
+    $("feedback").innerHTML = `❌ Správně: <strong>${current.a[0]}</strong><br>${current.e || ""}`;
+  }
+  $("scorePill").textContent = correct + " / " + total;
+  $("streakPill").textContent = streak + "x streak";
+  $("mistakesNow").textContent = mistakes;
+  $("nextBtn").disabled = false;
+  updateRank();
+}
+function finish(){
+  $("quiz").classList.add("hidden");
+  $("done").classList.remove("hidden");
+  $("progressBar").style.width = "100%";
+  const pct = order.length ? Math.round(correct / order.length * 100) : 0;
+  $("finalScore").textContent = correct + " / " + order.length + " (" + pct + "%)";
+  $("finalText").textContent = "Získáno: " + gained + " XP · chyby: " + mistakes + ". Progress je uložený do dashboardu.";
+  if(window.FLAuth && FLAuth.recordTest){
+    FLAuth.recordTest({topic:BASE_BANK[selectedKey].title,key:selectedKey,score:correct,total:order.length,pct,xp:gained});
+  }
+  updateRank();
+}
+$("topicSelect").addEventListener("change", e => { selectedKey = e.target.value; applyTopic(); });
+$("difficultySelect").addEventListener("change", applyTopic);
+$("startBtn").onclick = () => {
+  buildOrder();
+  $("setup").classList.add("hidden");
+  $("done").classList.add("hidden");
+  $("quiz").classList.remove("hidden");
+  renderQuestion();
+};
+$("nextBtn").onclick = () => { idx++; renderQuestion(); };
+$("finishBtn").onclick = finish;
+$("againBtn").onclick = () => { $("done").classList.add("hidden"); $("setup").classList.remove("hidden"); };
+$("checkBtn").onclick = () => { const val = $("answerInput").value; if(val.trim()) answer(val); };
+$("answerInput").addEventListener("keydown", e => { if(e.key === "Enter") $("checkBtn").click(); });
+fillTopics();
+applyTopic();
+</script>
+</main></body></html>

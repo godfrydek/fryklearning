@@ -1,0 +1,14 @@
+<!DOCTYPE html><html lang="cs"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="robots" content="noindex,nofollow"/><title>Profil · Fryk Learning</title><link rel="stylesheet" href="style.css?v=finalsell1781348453"/><script src="guard.js?v=finalsell1781348453"></script></head><body><main class="wrap">
+<div class="topbar"><a class="brand-mini" href="index.html?v=finalsell1781348453">Fryk Learning</a><a class="nav" href="dashboard.html?v=finalsell1781348453">Dashboard</a><a class="nav" href="leaderboard.html?v=finalsell1781348453">Žebříček</a><a class="nav" href="settings.html?v=finalsell1781348453">Nastavení</a><a class="nav auth-link" href="login.html?v=finalsell1781348453">Login</a></div>
+<section class="hero card"><div class="badge">Fryk Learning · profil</div><h1>Profil</h1><p class="lead">Tvoje role, progress a rychlé akce.</p></section>
+<section class="profile-grid">
+  <article class="card box"><h2>Účet</h2><div id="profileBox"></div><div class="actions"><button class="secondary" onclick="FLAuth.logout()">Odhlásit</button></div></article>
+  <article class="card box"><h2>Badges</h2><p class="small">Odznaky za učení, testy a konzistenci.</p><div class="badge-row"><span>🔥 Streak</span><span>🧠 Theory</span><span>⚡ Test mode</span><span>🏆 XP grind</span></div></article>
+</section>
+<script src="auth.js?v=finalsell1781348453"></script>
+<script>
+const me = FLAuth.current();
+const s = FLAuth.summary();
+document.getElementById("profileBox").innerHTML = `<div class="table-like"><div><strong>${me?.name||"User"}</strong><span>${me?.role||"student"}</span></div><div><strong>${s.xp} XP</strong><span>${s.tests} testů · průměr ${s.avg}%</span></div><div><strong>Build</strong><span>${FLAuth.build}</span></div></div>`;
+</script>
+</main></body></html>

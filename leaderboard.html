@@ -1,0 +1,19 @@
+<!DOCTYPE html><html lang="cs"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="robots" content="noindex,nofollow"/><title>Žebříček · Fryk Learning</title><link rel="stylesheet" href="style.css?v=finalsell1781348453"/><script src="guard.js?v=finalsell1781348453"></script></head><body><main class="wrap">
+<div class="topbar"><a class="brand-mini" href="index.html?v=finalsell1781348453">Fryk Learning</a><a class="nav" href="dashboard.html?v=finalsell1781348453">Dashboard</a><a class="nav" href="test.html?v=finalsell1781348453">Testy</a><a class="nav auth-link" href="login.html?v=finalsell1781348453">Login</a></div>
+<section class="hero card"><div class="badge">Fryk Learning · leaderboard</div><h1>Žebříček</h1><p class="lead">Lokální XP žebříček podle výsledků testů v tomto prohlížeči.</p></section>
+<section class="card box"><h2>Leaderboard</h2><div id="leaderboard" class="table-like"></div></section>
+<script src="auth.js?v=finalsell1781348453"></script>
+<script>
+const rows = FLAuth.progress();
+const map = {};
+rows.forEach(r => {
+  const k = r.user || "local";
+  if(!map[k]) map[k] = {name:r.name||"User", xp:0, tests:0, best:0};
+  map[k].xp += Number(r.xp)||0;
+  map[k].tests++;
+  map[k].best = Math.max(map[k].best, Number(r.pct)||0);
+});
+const list = Object.values(map).sort((a,b)=>b.xp-a.xp);
+document.getElementById("leaderboard").innerHTML = list.map((r,i)=>`<div><strong>#${i+1} ${r.name}</strong><span>${r.xp} XP · ${r.tests} testů · best ${r.best}%</span></div>`).join("") || "<p class='small'>Zatím žádné výsledky. Spusť test a žebříček se naplní.</p>";
+</script>
+</main></body></html>

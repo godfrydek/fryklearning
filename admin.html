@@ -1,0 +1,16 @@
+<!DOCTYPE html><html lang="cs"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="robots" content="noindex,nofollow"/><title>Admin · Fryk Learning</title><link rel="stylesheet" href="style.css?v=finalsell1781348453"/><script src="guard.js?v=finalsell1781348453"></script></head><body><main class="wrap">
+<div class="topbar"><a class="brand-mini" href="index.html?v=finalsell1781348453">Fryk Learning</a><a class="nav" href="dashboard.html?v=finalsell1781348453">Dashboard</a><a class="nav" href="settings.html?v=finalsell1781348453">Nastavení</a><a class="nav auth-link" href="login.html?v=finalsell1781348453">Login</a></div>
+<section class="hero card"><div class="badge">Fryk Learning · admin</div><h1>Admin</h1><p class="lead">Přehled aktivních účtů a rychlá kontrola přístupů.</p></section>
+<section class="card box"><h2>Aktivní účty</h2><div id="adminUsers" class="table-like"></div></section>
+<section class="card box"><h2>Žádosti o přístup</h2><p class="small">Žádosti chodí přes formulář v Sign up sekci. Po schválení můžeš uživateli poslat login údaje ručně.</p></section>
+<script src="auth.js?v=finalsell1781348453"></script>
+<script>
+const me = FLAuth.current();
+const box = document.getElementById("adminUsers");
+if(!me || me.role !== "admin") {
+  box.innerHTML = "<p class='small'>Nemáš admin roli.</p>";
+} else {
+  box.innerHTML = FLAuth.users().map(u => `<div><strong>${u.name}</strong><span>${u.role} · ${u.status}</span></div>`).join("");
+}
+</script>
+</main></body></html>

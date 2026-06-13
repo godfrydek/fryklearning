@@ -1,0 +1,9 @@
+{
+  "name": "Fryk Learning",
+  "short_name": "Fryk",
+  "start_url": "index.html?v=finalsell1781348453",
+  "display": "standalone",
+  "background_color": "#07111f",
+  "theme_color": "#67e8f9",
+  "description": "Private learning hub with theory, ranked tests, XP and dashboard."
+}

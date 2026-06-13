@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="cs"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="robots" content="noindex,nofollow"/><title>Nastavení · Fryk Learning</title><link rel="stylesheet" href="style.css?v=finalsell1781348453"/><script src="guard.js?v=finalsell1781348453"></script></head><body><main class="wrap">
+<div class="topbar"><a class="brand-mini" href="index.html?v=finalsell1781348453">Fryk Learning</a><a class="nav" href="dashboard.html?v=finalsell1781348453">Dashboard</a><a class="nav" href="profile.html?v=finalsell1781348453">Profil</a><a class="nav auth-link" href="login.html?v=finalsell1781348453">Login</a></div>
+<section class="hero card"><div class="badge">Fryk Learning · nastavení</div><h1>Nastavení</h1><p class="lead">Úprava prostředí pro pohodlnější učení.</p></section>
+<form class="auth-card card wide-auth" id="settingsForm">
+  <h2>UI preference</h2>
+  <label class="check-row"><input type="checkbox" name="compact"> Kompaktnější UI</label>
+  <label class="check-row"><input type="checkbox" name="focus"> Focus mode – méně vizuálního šumu</label>
+  <label>Výchozí délka testu<select name="defaultLength"><option value="20">20 rychlovka</option><option value="50">50 standard</option><option value="100">100 grind</option></select></label>
+  <button class="primary" type="submit">Uložit nastavení</button>
+  <div id="settingsMsg" class="form-msg"></div>
+</form>
+<script src="auth.js?v=finalsell1781348453"></script>
+<script>
+const form = document.getElementById("settingsForm");
+const s = FLAuth.settings();
+form.compact.checked = !!s.compact;
+form.focus.checked = !!s.focus;
+form.defaultLength.value = s.defaultLength || "20";
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  FLAuth.saveSettings({compact:form.compact.checked, focus:form.focus.checked, defaultLength:form.defaultLength.value});
+});
+</script>
+</main></body></html>
